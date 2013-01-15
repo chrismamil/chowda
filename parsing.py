@@ -17,6 +17,29 @@ def date_parse(x):
 
 print date_parse('13:46:31 11-07-11')
 
+#splits experiment subject into 2 srings
+
+def split(exp_subject):
+	return exp_subject.split(" :")
+
+print split('Subject: CSN1')
+
+#slpits the subject mass into 2 strings
+
+def split(sub_mass):
+	return sub_mass.split(" :")
+
+print split ("subject mass: 35.4g")
+
+
+#splits measure and set time into 2 strings
+
+def split(messet_time):
+	return messet_time.split(" :")
+
+print split("measure time: 60 seconds")
+print split("settle time: 144 seconds")
+
 
 
 
