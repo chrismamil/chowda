@@ -26,6 +26,12 @@ print split ("subject mass: 35.4g")
 print split("measure time: 60 seconds")
 print split("settle time: 144 seconds")
 
+dictionary = {'Experiment started' : '13:46:31 11-07-11', 'Subject': 'CSN1' , 'Subject mass':'35.4g', 'measure time': '60seconds', 'settle time': '144 seconds'}
+
+dictionary['Experiment started']
+
+
+
 
 
 
