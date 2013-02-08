@@ -1,6 +1,7 @@
 import os
 import fnmatch
 from chowda.log import logger
+from chowda.utils import file_exists, partition
 
 
 def locate(pattern, root=os.curdir):
@@ -12,16 +13,41 @@ def locate(pattern, root=os.curdir):
 
 
 def load_file(filename):
-    logger.info("Processing %s." % (filename))
-    """
-    open file
-    header = christine_function(filedata)
-    body = rorys_function(filedata)
-    combine_that_stuff = comin
-    agiowngoangowngo
-    return the big table of data
-    """
-    logger.info("Finished processing %s." % (filename))
+    if not file_exists(filename):
+        logger.warning("%s does not exist or is a zero length file, skipping."
+                       % (filename))
+        return None
+    logger.info("Loading %s." % (filename))
+    with open(filename) as in_handle:
+        return in_handle.readlines()
+
+
+def _is_not_data_header(line):
+    return not line.split(",")[0] == '"Interval"'
+
+
+def partition_header_and_data(lines):
+    return partition(_is_not_data_header, lines)
+
+
+def get_data(filename):
+    lines = load_file(filename)
+    header, data = partition_header_and_data(lines)
+    stripped = [x.strip().replace('"', '') for x in data]
+    return stripped
+
+
+def get_header(filename):
+    lines = load_file(filename)
+    header, data = partition_header_and_data(lines)
+    return list(header)
+
+
+def partition_file(filename):
+    lines = load_file(filename)
+    header, data = partition_header_and_data(lines)
+    stripped = [x.strip().replace('"', '') for x in data]
+    return list(header), stripped
 
 
 def process_directory(dir):
