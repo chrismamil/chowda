@@ -3,11 +3,11 @@ import os
 import chowda.parsing as parse
 import datetime
 import pandas as pd
-from chowda.load import load_file, get_data, load_dataframe
-
+from chowda.load import load_file
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 TEST_FILE = "CTL1 wk3 exp1 RAW data.txt"
+TEST_1 = os.path.join(DATA_DIR, TEST_FILE)
 
 
 class TestChowda(unittest.TestCase):
@@ -29,20 +29,33 @@ class TestChowda(unittest.TestCase):
         result = parse.parse_subject_mass(self.in_data[2])
         self.assertEquals(result["Subject Mass"], 34.26)
 
-    def test_parse_header(self):
-        result = parse.parse_header(self.in_data[0:9])
-        WANT_KEYS = ["Experiment Started", "Subject", "Subject Mass"]
-        self.assertEquals(result.keys(), WANT_KEYS)
-
     def test_load_file(self):
-        result = load_file(TEST_FILE)
+        from chowda.load import load_file
+        result = load_file(TEST_1)
         self.assertEquals(result[0].strip(),
-                          "Experiment Started: 13:46:23 11-14-11")
+                          '"Oxymax Windows  V 2.30 Data File"')
+
+    def test_get_header(self):
+        from chowda.load import get_header
+        result = get_header(TEST_1)
+        self.assertEquals(result[0].strip(),
+                          '"Oxymax Windows  V 2.30 Data File"')
+        self.assertEquals(result[-1].split(",")[0].strip(), '"========"')
 
     def test_get_data(self):
-        result = get_data(self.in_data)
-        self.assertEquals(result.split(",", 1)[0], "Interval")
+        from chowda.load import get_data
+        result = get_data(TEST_1)
+        self.assertEquals(result[0].split(",", 1)[0], "Interval")
+
+    def test_partition_file(self):
+        from chowda.load import partition_file
+        header, data = partition_file(TEST_1)
+        self.assertEquals(header[0].strip(),
+                          '"Oxymax Windows  V 2.30 Data File"')
+        self.assertEquals(header[-1].split(",")[0].strip(), '"========"')
+        self.assertEquals(data[0].split(",", 1)[0], "Interval")
 
     def test_load_dataframe(self):
+        from chowda.load import load_dataframe
         result = load_dataframe(parse.get_data(self.in_data))
         self.assertEquals(result["Interval"].ix[0], "001")
