@@ -32,6 +32,30 @@ def parse_subject(line1):
 
 print parse_subject("Subject: CSN1")
 
+#parse subject mass line
+def split_strip2(line):
+	return line.strip(' g').split(": ")
+print split_strip2("Subject Mass: 35.44 g")
+
+def parse_mass(line):
+	split_line = split_strip2(line)
+	print split_line
+
+	parse_line = {split_line[0] : split_line[1]}
+	float = split_line[1]
+	return parse_line
+
+print parse_mass("Subject Mass: 35.44 g")
+
+print type(35.44)
+
+
+##want to look like Subject mass: 35.4 (where 35.4 is a float...not a string)
+
+
+
+
+
 
 
 
