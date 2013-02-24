@@ -4,7 +4,7 @@
 import datetime
 
 def split_strip(title_text):
-	return title_text.strip('"').strip('n\r').split(": ")
+	return title_text.replace('"', '').strip('\r\n').split(": ")
 
 #Parse date
 #FYI this will give the wrong date after 2068 b/c values 0-68 are mapped to 2000-2068 in POISX or X/open standard 
