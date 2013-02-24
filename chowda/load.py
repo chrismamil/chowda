@@ -46,16 +46,37 @@ def get_header(filename):
 def partition_file(filename):
     lines = load_file(filename)
     header, data = partition_header_and_data(lines)
-    stripped = [x.strip().replace('"', '') for x in data]
-    return list(header), stripped
+    #unquoted_data = [x.strip().replace('"', '') for x in data]
+    return list(header), list(data)
 
 
-def process_directory(dir):
-    map(load_file, locate("*.txt", dir))
+def process_directory(data_dir):
+    #partitioned_files = map(partition_file, locate("*.txt", data_dir))
+    header, raw_data = partition_file(list(locate("*.txt", data_dir))[0])
+    units = get_units(raw_data)
+    colnames = get_colnames(raw_data)
+    data_points = get_data_points(raw_data)
+    return units, colnames, data_points
     """
     do analayis a on big table
     do the b
     make graphs
     summarize
     output
+
+    TODO:
+    drop final column
+    drop feed,acc
     """
+
+
+def get_units(data):
+    return data[1].split(",")[:-1]
+
+
+def get_colnames(data):
+    return data[0].split(",")[:-1]
+
+
+def get_data_points(data):
+    return [x.split(",")[:-1] for x in data[3:]]
