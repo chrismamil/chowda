@@ -44,33 +44,13 @@ def parse_mass(line):
 	parse_line = {split_line[0] : mass_as_float}
 	return parse_line
 
-print parse_mass('"Subject Mass: 35.44 g"')
-
-
-
-
-
-
-##want to look like Subject mass: 35.4 (where 35.4 is a float...not a string)
-
-##next step- bring raw data subject lines into my parsing...the data is a LIST...figure out how to get the items in the list i want (ie: 1,2,3, not 0, and not past 3)
-## to get raw data
-# filename = "/Users/christine/Documents/chowda/test/data/CTL1 wk3 exp1 RAW data.txt"
-#>>> filename:'/Users/christine/Documents/chowda/test/data/CTL1 wk3 exp1 RAW data#.txt'
-#>>> from chowda.load_file import get_header
-#>>> from chowda.load import get_header
-#>>> get_header(filename)
-# this will give me all the header stuff
-
-#want to parse lines 2,3,4,5
-
-
-
-
-
-
-
-
+#formally open_file_and_read_line- this parses the whole header together
+def parse_header(header):
+    parse_line1 = parse_experiment_time(header[1])
+    parse_line2 = parse_subject(header[2])
+    parse_line3 = parse_mass(header[3])
+    dict_parse = dict(parse_line1.items() + parse_line2.items() + parse_line3.items())
+    return dict_parse
 
 
 
